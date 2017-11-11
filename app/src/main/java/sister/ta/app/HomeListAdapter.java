@@ -1,6 +1,7 @@
 package sister.ta.app;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ItemVi
             posisi = "Tidak di kampus";
         else
             posisi = "Di kampus";
+        if(posisi.equals("Tidak di kampus"))
+            holder.txtStatus.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
+        else
+            holder.txtStatus.setTextColor(ContextCompat.getColor(context, R.color.colorGreen));
         holder.txtStatus.setText(posisi);
     }
 
