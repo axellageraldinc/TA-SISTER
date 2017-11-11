@@ -139,7 +139,8 @@ public class RegisterActivity extends AppCompatActivity {
                     User user = new User(userId, email, namaLengkap, "no", spinnerRole.getSelectedItem().toString(), spinnerJurusan.getSelectedItem().toString());
                     System.out.println("Jurusan selected : " + spinnerJurusan.getSelectedItem().toString());
                     databaseReference = FirebaseDatabase.getInstance().getReference("users");
-                    databaseReference.child(userId).child("biodata").setValue(user);
+                    databaseReference.child(userId).setValue(user);
+                    firebaseAuth.signOut();
                 } else{
                     Toast.makeText(RegisterActivity.this, "Gagal registrasi user", Toast.LENGTH_SHORT).show();
                 }

@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user!=null){
-                    databaseReference.child("users").child(user.getUid()).child("biodata").addValueEventListener(new ValueEventListener() {
+                    databaseReference.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             User user = dataSnapshot.getValue(User.class);
@@ -104,12 +104,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     String userId = task.getResult().getUser().getUid();
-                    databaseReference.child("users").child(userId).child("biodata").addValueEventListener(new ValueEventListener() {
+                    databaseReference.child("users").child(userId).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             User user = dataSnapshot.getValue(User.class);
                             String name = user.getNama_lengkap();
-                            Toast.makeText(LoginActivity.this, "Hai " + name, Toast.LENGTH_SHORT).show();
                             if(user.getRole().equals("Mahasiswa")){
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
