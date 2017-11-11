@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Button btnLogin;
     EditText txtEmail, txtPassword;
+    TextView txtDaftar;
 
     @Override
     protected void onStart() {
@@ -47,6 +49,15 @@ public class LoginActivity extends AppCompatActivity {
         txtEmail = findViewById(R.id.txtEmail);
         txtPassword = findViewById(R.id.txtPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        txtDaftar = findViewById(R.id.txtDaftar);
+
+        txtDaftar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(i);
+            }
+        });
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
