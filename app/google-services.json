@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "346692215578",
+    "firebase_url": "https://findos-7b9cd.firebaseio.com",
+    "project_id": "findos-7b9cd",
+    "storage_bucket": "findos-7b9cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346692215578:android:d19567cb1552f3e5",
+        "android_client_info": {
+          "package_name": "sister.ta.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346692215578-92jemev6epd3ekc7hma5261gtccqerg9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sister.ta.app",
+            "certificate_hash": "6aef4afce432d56c360e154cb7750eabe895ffd9"
+          }
+        },
+        {
+          "client_id": "346692215578-4usg4qaf4f3rfaigmigihjid7nuv16is.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARZvHkRccgQ5nquCJdna8AE57usdWOCpU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346692215578-4usg4qaf4f3rfaigmigihjid7nuv16is.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

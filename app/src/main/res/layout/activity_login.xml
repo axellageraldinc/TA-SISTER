@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="45dp"
         android:background="@drawable/background_putih"
         android:orientation="vertical"
         android:paddingBottom="20dp"
@@ -30,33 +30,16 @@
         android:paddingTop="20dp"
         tools:layout_editor_absoluteX="8dp">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="Email UGM"
-            android:textColor="@color/colorGreyMuda" />
-
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Email UGM"
             android:inputType="textEmailAddress" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="15dp"
-            android:text="Password"
-            android:textColor="@color/colorGreyMuda" />
-
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -64,7 +47,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -76,7 +59,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtDaftar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"

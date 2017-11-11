@@ -6,22 +6,20 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+    android:padding="20dp"
     tools:context="sister.ta.app.LoginActivity">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="40dp"
         app:srcCompat="@drawable/ic_logo" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="45dp"
         android:background="@drawable/background_putih"
         android:orientation="vertical"
         android:paddingBottom="20dp"
@@ -30,71 +28,44 @@
         android:paddingTop="20dp"
         tools:layout_editor_absoluteX="8dp">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="Email UGM"
-            android:textColor="@color/colorGreyMuda" />
-
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Email UGM"
             android:inputType="textEmailAddress" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="15dp"
-            android:text="Password"
-            android:textColor="@color/colorGreyMuda" />
-
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="15dp"
-            android:text="Nama lengkap"
-            android:textColor="@color/colorGreyMuda" />
-
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/txtNamaLengkap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Nama lengkap" />
 
-        <TextView
-            android:id="@+id/textView4"
+        <Spinner
+            android:id="@+id/spinnerRole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="15dp"
-            android:text="Jurusan"
-            android:textColor="@color/colorGreyMuda" />
+            android:layout_marginTop="10dp" />
 
         <Spinner
             android:id="@+id/spinnerJurusan"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:spinnerMode="dialog" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnDaftar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
