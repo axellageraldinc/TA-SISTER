@@ -136,7 +136,12 @@ public class RegisterActivity extends AppCompatActivity {
                     txtPassword.setText("");
                     txtNamaLengkap.setText("");
                     userId = task.getResult().getUser().getUid();
-                    User user = new User(userId, email, namaLengkap, "no", spinnerRole.getSelectedItem().toString(), spinnerJurusan.getSelectedItem().toString());
+                    User user;
+                    if(spinnerRole.getSelectedItem().toString().equals("Mahasiswa")){
+                        user = new User(userId, email, namaLengkap, "no", spinnerRole.getSelectedItem().toString(), spinnerJurusan.getSelectedItem().toString());
+                    } else{
+                        user = new User(userId, email, namaLengkap, "no", spinnerRole.getSelectedItem().toString(), spinnerJurusan.getSelectedItem().toString(), "no");
+                    }
                     System.out.println("Jurusan selected : " + spinnerJurusan.getSelectedItem().toString());
                     databaseReference = FirebaseDatabase.getInstance().getReference("users");
                     databaseReference.child(userId).setValue(user);

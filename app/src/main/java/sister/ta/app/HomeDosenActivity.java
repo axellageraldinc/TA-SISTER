@@ -6,14 +6,25 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class HomeActivity extends AppCompatActivity {
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+public class HomeDosenActivity extends AppCompatActivity {
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
 
     private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_home_dosen);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         Handler mHandler = new Handler();
         final String CURRENT_TAG = "HOME";
         Runnable mPendingRunnable = new Runnable() {
@@ -35,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
     private Fragment getHomeFragment(){
-        MahasiswaFragment homeFragment = new MahasiswaFragment();
+        DosenFragment homeFragment = new DosenFragment();
         homeFragment.setArguments(bundle);
         return homeFragment;
     }

@@ -24,9 +24,6 @@ import java.util.List;
 import sister.ta.app.model.User;
 
 public class MahasiswaFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String TAG = MahasiswaFragment.class.getSimpleName();
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
@@ -87,7 +84,9 @@ public class MahasiswaFragment extends Fragment {
                 userList.clear();
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     User user = data.getValue(User.class);
-                    if (user.getJurusan().equals(jurusan) && user.getRole().equals("Dosen"))
+                    if (user.getJurusan().equals(jurusan) &&
+                            user.getRole().equals("Dosen") &&
+                            user.getShare().equals("yes"))
                         userList.add(user);
                 }
                 recyclerDosen.setAdapter(homeListAdapter);

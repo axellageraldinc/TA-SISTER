@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="sister.ta.app.DosenFragment">
+
+    <ToggleButton
+        android:id="@+id/toggleStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_toggle"
+        android:textColor="@color/colorWhite"
+        android:textOff="NO"
+        android:textOn="YES"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txtGanti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="Klik tombol di atas untuk mengganti"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -5,7 +5,7 @@ package sister.ta.app.model;
  */
 
 public class User {
-    private String id, email, password, nama_lengkap, status, role, jurusan;
+    private String id, email, password, nama_lengkap, status, role, jurusan, share;
 
     public User(String id, String email, String nama_lengkap, String status, String role, String jurusan) {
         this.id = id;
@@ -16,8 +16,22 @@ public class User {
         this.jurusan = jurusan;
     }
 
+    public User(String id, String email, String nama_lengkap, String status, String role, String jurusan, String share) {
+        this.id = id;
+        this.email = email;
+        this.nama_lengkap = nama_lengkap;
+        this.status = status;
+        this.role = role;
+        this.jurusan = jurusan;
+        this.share = share;
+    }
+
     public User(){
 
+    }
+
+    public User(String share) {
+        this.share = share;
     }
 
     public String getId() {
@@ -74,5 +88,13 @@ public class User {
 
     public void setJurusan(String jurusan) {
         this.jurusan = jurusan;
+    }
+
+    public String getShare() {
+        return share;
+    }
+
+    public void setShare(String share) {
+        this.share = share;
     }
 }

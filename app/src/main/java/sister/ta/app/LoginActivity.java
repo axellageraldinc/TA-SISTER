@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -69,13 +68,14 @@ public class LoginActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             User user = dataSnapshot.getValue(User.class);
                             String name = user.getNama_lengkap();
-                            Toast.makeText(LoginActivity.this, "Hai " + name, Toast.LENGTH_SHORT).show();
                             if(user.getRole().equals("Mahasiswa")){
-                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                Intent intent = new Intent(getApplicationContext(), HomeMahasiswaActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
                             } else{
-
+                                Intent intent = new Intent(getApplicationContext(), HomeDosenActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
                             }
                         }
 
@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                             User user = dataSnapshot.getValue(User.class);
                             String name = user.getNama_lengkap();
                             if(user.getRole().equals("Mahasiswa")){
-                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                Intent intent = new Intent(getApplicationContext(), HomeMahasiswaActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
                             }

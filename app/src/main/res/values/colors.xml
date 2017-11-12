@@ -5,9 +5,11 @@
     <color name="colorPrimaryDarker">#017EBC</color>
     <color name="colorAccent">#0fa8f3</color>
     <color name="colorWhite">#ffffff</color>
-    <color name="colorBackground">#F5F5F5</color>
+    <color name="colorBackground">#f5f5f5</color>
     <color name="colorGreen">#0ac80a</color>
+    <color name="colorGreenTua">#09A609</color>
     <color name="colorRed">#CE0707</color>
+    <color name="colorRedTua">#AE0606</color>
     <color name="colorGrey">#757575</color>
     <color name="colorGreyMuda">#b7b7b7</color>
 </resources>
