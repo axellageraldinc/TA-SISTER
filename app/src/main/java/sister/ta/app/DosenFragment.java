@@ -59,11 +59,9 @@ public class DosenFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        AsyncTask asyncTask = new AsyncTask(getContext());
-        asyncTask.execute();
-
         gpsTracker = new GPSTracker(getContext());
-        setLocationAddress();
+        AsyncTask asyncTask = new AsyncTask(gpsTracker, getContext());
+        asyncTask.execute();
 
         view = inflater.inflate(R.layout.fragment_dosen, container, false);
         toggleStatus = view.findViewById(R.id.toggleStatus);
@@ -115,8 +113,8 @@ public class DosenFragment extends Fragment {
     private void setLocationAddress() {
         if (gpsTracker.getLocation() != null) {
             if (gpsTracker.getLatitude() != 0 && gpsTracker.getLongitude() != 0) {
-                Toast.makeText(getContext(), gpsTracker.getLatitude() + "," + gpsTracker.getLongitude(), Toast.LENGTH_SHORT).show();
-                // Do whatever you want
+//                Toast.makeText(getContext(), gpsTracker.getLatitude() + "," + gpsTracker.getLongitude(), Toast.LENGTH_SHORT).show();
+                System.out.println(gpsTracker.getLatitude() + "," + gpsTracker.getLongitude());
             } else {
                 buildAlertMessageNoGps();
             }
@@ -151,14 +149,18 @@ public class DosenFragment extends Fragment {
 
     class AsyncTask extends android.os.AsyncTask<Void, Void, Boolean>{
         Context context;
+        GPSTracker gpsTracker;
+        int i=0;
 
-        public AsyncTask(Context context){
+        public AsyncTask(GPSTracker gpsTracker, Context context){
+            this.gpsTracker = gpsTracker;
             this.context=context;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            gpsTracker = new GPSTracker(getContext());
         }
 
         @Override
@@ -168,6 +170,17 @@ public class DosenFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
+            while(i<1){
+                try {
+                    if(){
+
+                    }
+                    setLocationAddress();
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             return null;
         }
     }
