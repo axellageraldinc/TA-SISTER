@@ -31,11 +31,11 @@ public class LoginActivity extends AppCompatActivity {
     EditText txtEmail, txtPassword;
     TextView txtDaftar;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseAuth.addAuthStateListener(authStateListener);
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        firebaseAuth.addAuthStateListener(authStateListener);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,42 +58,45 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user!=null){
-                    databaseReference.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            User user = dataSnapshot.getValue(User.class);
-                            String name = user.getNama_lengkap();
-                            if(user.getRole().equals("Mahasiswa")){
-                                Intent intent = new Intent(getApplicationContext(), HomeMahasiswaActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
-                            } else{
-                                Intent intent = new Intent(getApplicationContext(), HomeDosenActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                } else{
+//        authStateListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if(user!=null){
+//                    databaseReference.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            try{
+//                                User user = dataSnapshot.getValue(User.class);
+//                                if(user.getRole().equals("Mahasiswa")){
+//                                    Intent intent = new Intent(getApplicationContext(), HomeMahasiswaActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                    startActivity(intent);
+//                                    finish();
+//                                } else{
+//                                    Intent intent = new Intent(getApplicationContext(), HomeDosenActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                    startActivity(intent);
+//                                    finish();
+//                                }
+//                            } catch (Exception ex){
+//                                System.out.println("Error checking logged in user : " + ex.toString());
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//                } else{
                     btnLogin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             LoginUser();
                         }
                     });
-                }
-            }
-        };
+//                }
+//            }
+//        };
     }
 
     private void LoginUser(){

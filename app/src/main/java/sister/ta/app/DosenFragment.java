@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ public class DosenFragment extends Fragment {
     String email, id, jurusan, nama_lengkap, role, share, status;
 
     GPSTracker gpsTracker;
+    Handler handler;
 
     public DosenFragment() {
         // Required empty public constructor
@@ -51,6 +53,10 @@ public class DosenFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handler = new Handler();
+        gpsTracker = new GPSTracker(getContext());
+        AsyncTask asyncTask = new AsyncTask(gpsTracker, getContext());
+        asyncTask.execute();
     }
 
     @Override
@@ -59,9 +65,6 @@ public class DosenFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        gpsTracker = new GPSTracker(getContext());
-        AsyncTask asyncTask = new AsyncTask(gpsTracker, getContext());
-        asyncTask.execute();
 
         view = inflater.inflate(R.layout.fragment_dosen, container, false);
         toggleStatus = view.findViewById(R.id.toggleStatus);
@@ -111,15 +114,19 @@ public class DosenFragment extends Fragment {
     }
 
     private void setLocationAddress() {
-        if (gpsTracker.getLocation() != null) {
-            if (gpsTracker.getLatitude() != 0 && gpsTracker.getLongitude() != 0) {
-//                Toast.makeText(getContext(), gpsTracker.getLatitude() + "," + gpsTracker.getLongitude(), Toast.LENGTH_SHORT).show();
-                System.out.println(gpsTracker.getLatitude() + "," + gpsTracker.getLongitude());
+        try{
+            if (gpsTracker.getLocation() != null) {
+                if (gpsTracker.getLatitude() != 0 && gpsTracker.getLongitude() != 0) {
+                    Toast.makeText(getContext(), gpsTracker.getLatitude() + "," + gpsTracker.getLongitude(), Toast.LENGTH_SHORT).show();
+                    System.out.println(gpsTracker.getLatitude() + "," + gpsTracker.getLongitude());
+                } else {
+                    buildAlertMessageNoGps();
+                }
             } else {
                 buildAlertMessageNoGps();
             }
-        } else {
-            buildAlertMessageNoGps();
+        } catch (Exception ex){
+            System.out.println("Error setLocationAddress : " + ex.toString());
         }
     }
     private void buildAlertMessageNoGps() {
@@ -172,10 +179,18 @@ public class DosenFragment extends Fragment {
         protected Boolean doInBackground(Void... voids) {
             while(i<1){
                 try {
-                    if(){
-
-                    }
-                    setLocationAddress();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setLocationAddress();
+                                }
+                            });
+                        }
+                    };
+                    new Thread(runnable).start();
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
