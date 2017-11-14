@@ -111,9 +111,12 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             User user = dataSnapshot.getValue(User.class);
-                            String name = user.getNama_lengkap();
                             if(user.getRole().equals("Mahasiswa")){
                                 Intent intent = new Intent(getApplicationContext(), HomeMahasiswaActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            } else{
+                                Intent intent = new Intent(getApplicationContext(), HomeDosenActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
                             }

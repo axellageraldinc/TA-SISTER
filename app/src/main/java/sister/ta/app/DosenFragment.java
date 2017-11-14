@@ -71,6 +71,7 @@ public class DosenFragment extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         handler = new Handler();
         gpsTracker = new GPSTracker(getContext());
+        GPSCheck();
         AsyncTask asyncTask = new AsyncTask(gpsTracker, getContext());
         asyncTask.execute();
 
@@ -119,6 +120,15 @@ public class DosenFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void GPSCheck(){
+        if (gpsTracker.getLocation() == null) {
+            gpsTracker.showSettingsAlert();
+            if (gpsTracker.getLatitude() == 0 && gpsTracker.getLongitude() == 0) {
+                buildAlertMessageNoGps();
+            }
+        }
     }
 
     private void setLocationAddress() {
