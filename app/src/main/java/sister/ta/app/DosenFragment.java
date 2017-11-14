@@ -1,7 +1,10 @@
 package sister.ta.app;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -39,6 +42,8 @@ public class DosenFragment extends Fragment {
     TextView txtGanti;
     String email, id, jurusan, nama_lengkap, role, share, status;
 
+    GPSTracker gpsTracker;
+
     public DosenFragment() {
         // Required empty public constructor
     }
@@ -54,6 +59,11 @@ public class DosenFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        AsyncTask asyncTask = new AsyncTask(getContext());
+        asyncTask.execute();
+
+        gpsTracker = new GPSTracker(getContext());
+        setLocationAddress();
 
         view = inflater.inflate(R.layout.fragment_dosen, container, false);
         toggleStatus = view.findViewById(R.id.toggleStatus);
@@ -100,5 +110,65 @@ public class DosenFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void setLocationAddress() {
+        if (gpsTracker.getLocation() != null) {
+            if (gpsTracker.getLatitude() != 0 && gpsTracker.getLongitude() != 0) {
+                Toast.makeText(getContext(), gpsTracker.getLatitude() + "," + gpsTracker.getLongitude(), Toast.LENGTH_SHORT).show();
+                // Do whatever you want
+            } else {
+                buildAlertMessageNoGps();
+            }
+        } else {
+            buildAlertMessageNoGps();
+        }
+    }
+    private void buildAlertMessageNoGps() {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+            builder1.setMessage("Location not detected");
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton("Try Again",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            setLocationAddress();
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    android.R.string.cancel,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+    }
+
+    class AsyncTask extends android.os.AsyncTask<Void, Void, Boolean>{
+        Context context;
+
+        public AsyncTask(Context context){
+            this.context=context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return null;
+        }
     }
 }
