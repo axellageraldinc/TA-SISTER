@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import sister.ta.app.model.Jurusan;
 import sister.ta.app.model.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         try{
                             User user = dataSnapshot.getValue(User.class);
-                            System.out.println(user.getRole());
                             if(user.getRole().equals("Mahasiswa")){
                                 System.out.println("Status doInBackground : 1");
                                 status=1;
@@ -53,9 +53,32 @@ public class MainActivity extends AppCompatActivity {
                             } else{
                                 System.out.println("Status doInBackground : 2");
                                 status=2;
-                                    Intent intent = new Intent(getApplicationContext(), HomeDosenActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    finish();
+                                String jurusan = user.getJurusan();
+                                System.out.println(jurusan);
+                                final double[] latJurusan = new double[1];
+                                final double[] lngJurusan = new double[1];
+                                databaseReference.child("list_jurusan").child(jurusan).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        try{
+                                            Jurusan jurusan1 = dataSnapshot.getValue(Jurusan.class);
+                                            latJurusan[0] = jurusan1.getLat();
+                                            lngJurusan[0] = jurusan1.getLng();
+                                            Intent intent = new Intent(getApplicationContext(), HomeDosenActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            intent.putExtra("latJurusan", latJurusan[0]);
+                                            intent.putExtra("lngJurusan", lngJurusan[0]);
+                                            startActivity(intent);
+                                            finish();
+                                        } catch (Exception ex){
+                                            System.out.println("Gagal get list jurusan MainActivity : " + ex.toString());
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                             }
                         } catch (Exception ex){
                             System.out.println("Error checking logged in user : " + ex.toString());

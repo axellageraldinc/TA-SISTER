@@ -3,6 +3,7 @@ package sister.ta.app;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import sister.ta.app.model.Jurusan;
 import sister.ta.app.model.User;
 
 
@@ -37,6 +39,8 @@ public class DosenFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
+
+    double LatJurusan, LngJurusan;
 
     View view;
     ToggleButton toggleStatus;
@@ -53,10 +57,10 @@ public class DosenFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handler = new Handler();
-        gpsTracker = new GPSTracker(getContext());
-        AsyncTask asyncTask = new AsyncTask(gpsTracker, getContext());
-        asyncTask.execute();
+        Intent i = getActivity().getIntent();
+        LatJurusan = i.getDoubleExtra("latJurusan", 0);
+        LngJurusan = i.getDoubleExtra("lngJurusan", 0);
+        System.out.println("LatLng from intent : " + LatJurusan + "," + LngJurusan);
     }
 
     @Override
@@ -65,6 +69,10 @@ public class DosenFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        handler = new Handler();
+        gpsTracker = new GPSTracker(getContext());
+        AsyncTask asyncTask = new AsyncTask(gpsTracker, getContext());
+        asyncTask.execute();
 
         view = inflater.inflate(R.layout.fragment_dosen, container, false);
         toggleStatus = view.findViewById(R.id.toggleStatus);
@@ -117,7 +125,11 @@ public class DosenFragment extends Fragment {
         try{
             if (gpsTracker.getLocation() != null) {
                 if (gpsTracker.getLatitude() != 0 && gpsTracker.getLongitude() != 0) {
-                    Toast.makeText(getContext(), gpsTracker.getLatitude() + "," + gpsTracker.getLongitude(), Toast.LENGTH_SHORT).show();
+                    if(Distance.distance(gpsTracker.getLatitude(), gpsTracker.getLongitude(), LatJurusan, LngJurusan)<0.08){
+                        UpdateStatusKampus("yes");
+                    } else {
+                        UpdateStatusKampus("no");
+                    }
                     System.out.println(gpsTracker.getLatitude() + "," + gpsTracker.getLongitude());
                 } else {
                     buildAlertMessageNoGps();
@@ -129,6 +141,12 @@ public class DosenFragment extends Fragment {
             System.out.println("Error setLocationAddress : " + ex.toString());
         }
     }
+
+    private void UpdateStatusKampus(String text){
+        User user = new User(id, email, nama_lengkap, text, role, jurusan, share);
+        databaseReference.child("users").child(firebaseUser.getUid()).setValue(user);
+    }
+
     private void buildAlertMessageNoGps() {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
             builder1.setMessage("Location not detected");
@@ -179,6 +197,7 @@ public class DosenFragment extends Fragment {
         protected Boolean doInBackground(Void... voids) {
             while(i<1){
                 try {
+                    Thread.sleep(5000);
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
@@ -191,7 +210,6 @@ public class DosenFragment extends Fragment {
                         }
                     };
                     new Thread(runnable).start();
-                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
