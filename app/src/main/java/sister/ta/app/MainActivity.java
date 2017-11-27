@@ -13,6 +13,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import sister.ta.app.model.Jurusan;
 import sister.ta.app.model.User;
 
@@ -21,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseAuth.AuthStateListener authStateListener;
     int status=0;
+
+    List<Jurusan> listJurusan = new ArrayList<>();
 
     @Override
     protected void onStart() {
@@ -45,40 +50,59 @@ public class MainActivity extends AppCompatActivity {
                         try{
                             User user = dataSnapshot.getValue(User.class);
                             if(user.getRole().equals("Mahasiswa")){
-                                System.out.println("Status doInBackground : 1");
                                 status=1;
-                                    Intent intent = new Intent(getApplicationContext(), HomeMahasiswaActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    finish();
+                                Intent intent = new Intent(getApplicationContext(), HomeMahasiswaActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
                             } else{
-                                System.out.println("Status doInBackground : 2");
                                 status=2;
-                                String jurusan = user.getJurusan();
-                                System.out.println(jurusan);
-                                final double[] latJurusan = new double[1];
-                                final double[] lngJurusan = new double[1];
-                                databaseReference.child("list_jurusan").child(jurusan).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        try{
-                                            Jurusan jurusan1 = dataSnapshot.getValue(Jurusan.class);
-                                            latJurusan[0] = jurusan1.getLat();
-                                            lngJurusan[0] = jurusan1.getLng();
-                                            Intent intent = new Intent(getApplicationContext(), HomeDosenActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            intent.putExtra("latJurusan", latJurusan[0]);
-                                            intent.putExtra("lngJurusan", lngJurusan[0]);
-                                            startActivity(intent);
-                                            finish();
-                                        } catch (Exception ex){
-                                            System.out.println("Gagal get list jurusan MainActivity : " + ex.toString());
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
+                                Intent intent = new Intent(getApplicationContext(), HomeDosenActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+//                                final String jurusan = user.getJurusan();
+//                                final double[] latJurusan = new double[1];
+//                                final double[] lngJurusan = new double[1];
+//                                databaseReference.child("list_jurusan").child(jurusan).addValueEventListener(new ValueEventListener() {
+//                                    @Override
+//                                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                                        Intent intent = new Intent(getApplicationContext(), HomeDosenActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                        try{
+//                                            Jurusan jurusan1 = dataSnapshot.getValue(Jurusan.class);
+//                                            if(jurusan1.getLat()==0){
+//                                                System.out.println("Jurusan lat = 0");
+//                                                databaseReference.child("list_jurusan").child(jurusan).addValueEventListener(new ValueEventListener() {
+//                                                    @Override
+//                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                                                        listJurusan.clear();
+//                                                        for (DataSnapshot data : dataSnapshot.getChildren()){
+//                                                            listJurusan.add(data.getValue(Jurusan.class));
+//                                                        }
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onCancelled(DatabaseError databaseError) {
+//
+//                                                    }
+//                                                });
+//                                            } else{
+//                                                System.out.println("Jurusan lat != 0");
+//                                                latJurusan[0] = jurusan1.getLat();
+//                                                lngJurusan[0] = jurusan1.getLng();
+//                                                intent.putExtra("latJurusan", latJurusan[0]);
+//                                                intent.putExtra("lngJurusan", lngJurusan[0]);
+//                                            }
+//                                            startActivity(intent);
+//                                            finish();
+//                                        } catch (Exception ex){
+//                                            System.out.println("Gagal get Jurusan Lat Lng : " + ex.toString());
+//                                        }
+//                                    }
+//
+//                                    @Override
+//                                    public void onCancelled(DatabaseError databaseError) {
+//
+//                                    }
+//                                });
                             }
                         } catch (Exception ex){
                             System.out.println("Error checking logged in user : " + ex.toString());

@@ -28,7 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import sister.ta.app.model.Jurusan;
@@ -49,6 +51,7 @@ public class DosenFragment extends Fragment {
 
     GPSTracker gpsTracker;
     Handler handler;
+    List<Jurusan> listJurusan = new ArrayList<>();
 
     public DosenFragment() {
         // Required empty public constructor
@@ -57,10 +60,10 @@ public class DosenFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent i = getActivity().getIntent();
-        LatJurusan = i.getDoubleExtra("latJurusan", 0);
-        LngJurusan = i.getDoubleExtra("lngJurusan", 0);
-        System.out.println("LatLng from intent : " + LatJurusan + "," + LngJurusan);
+//        Intent i = getActivity().getIntent();
+//        LatJurusan = i.getDoubleExtra("latJurusan", 0);
+//        LngJurusan = i.getDoubleExtra("lngJurusan", 0);
+//        System.out.println("LatLng from intent : " + LatJurusan + "," + LngJurusan);
     }
 
     @Override
@@ -76,6 +79,7 @@ public class DosenFragment extends Fragment {
         asyncTask.execute();
 
         view = inflater.inflate(R.layout.fragment_dosen, container, false);
+        GetLatLngJurusan();
         toggleStatus = view.findViewById(R.id.toggleStatus);
         txtGanti = view.findViewById(R.id.txtGanti);
         try{
@@ -122,6 +126,60 @@ public class DosenFragment extends Fragment {
         return view;
     }
 
+    private void GetLatLngJurusan(){
+        try{
+            databaseReference.child("users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    jurusan = user.getJurusan();
+                    databaseReference.child("list_jurusan").child(jurusan).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            try{
+                                Jurusan jurusan1 = dataSnapshot.getValue(Jurusan.class);
+                                if(jurusan1.getLat()==0){
+                                    System.out.println("Jurusan lat = 0");
+                                    databaseReference.child("list_jurusan").child(jurusan).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            listJurusan.clear();
+                                            for (DataSnapshot data : dataSnapshot.getChildren()){
+                                                listJurusan.add(data.getValue(Jurusan.class));
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                } else{
+                                    System.out.println("Jurusan lat != 0");
+                                    LatJurusan = jurusan1.getLat();
+                                    LngJurusan = jurusan1.getLng();
+                                }
+                            } catch (Exception ex){
+                                System.out.println("Gagal get Jurusan Lat Lng : " + ex.toString());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } catch (Exception ex){
+            System.out.println(ex.toString());
+        }
+    }
+
     private void GPSCheck(){
         if (gpsTracker.getLocation() == null) {
             gpsTracker.showSettingsAlert();
@@ -135,12 +193,24 @@ public class DosenFragment extends Fragment {
         try{
             if (gpsTracker.getLocation() != null) {
                 if (gpsTracker.getLatitude() != 0 && gpsTracker.getLongitude() != 0) {
-                    if(Distance.distance(gpsTracker.getLatitude(), gpsTracker.getLongitude(), LatJurusan, LngJurusan)<0.08){
-                        UpdateStatusKampus("yes");
-                    } else {
-                        UpdateStatusKampus("no");
+                    if(LatJurusan!=0) {
+                        if (Distance.distance(gpsTracker.getLatitude(), gpsTracker.getLongitude(), LatJurusan, LngJurusan) < 0.08) {
+                            UpdateStatusKampus("yes");
+                        } else {
+                            UpdateStatusKampus("no");
+                        }
+                    } else{
+                        for(Jurusan jurusan : listJurusan){
+                            System.out.println("*** List jurusan : " + jurusan.getJurusan() + " : " + jurusan.getLat() + "," + jurusan.getLng() + " | " + Distance.distance(gpsTracker.getLatitude(), gpsTracker.getLongitude(), jurusan.getLat(), jurusan.getLng()));
+                            if (Distance.distance(gpsTracker.getLatitude(), gpsTracker.getLongitude(), jurusan.getLat(), jurusan.getLng()) < 0.08) {
+                                UpdateStatusKampus(jurusan.getJurusan());
+                                break;
+                            } else {
+                                UpdateStatusKampus("no");
+                            }
+                        }
                     }
-                    System.out.println(gpsTracker.getLatitude() + "," + gpsTracker.getLongitude());
+//                    System.out.println(gpsTracker.getLatitude() + "," + gpsTracker.getLongitude());
                 } else {
                     buildAlertMessageNoGps();
                 }

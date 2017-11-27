@@ -39,11 +39,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ItemVi
     public void onBindViewHolder(HomeListAdapter.ItemViewHolder holder, int position) {
         holder.txtNamaDosen.setText(userList.get(position).getNama_lengkap());
         String status = userList.get(position).getStatus();
-        String posisi;
+        String posisi = null;
         if(status.equals("no"))
             posisi = "Tidak di kampus";
-        else
+        else if(status.equals("yes"))
             posisi = "Di kampus";
+        else
+            posisi = "Di " + status;
         if(posisi.equals("Tidak di kampus"))
             holder.txtStatus.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
         else

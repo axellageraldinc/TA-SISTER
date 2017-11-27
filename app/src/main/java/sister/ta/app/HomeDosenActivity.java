@@ -97,19 +97,23 @@ public class HomeDosenActivity extends AppCompatActivity {
         }
     }
     private void loadNavHeader() {
-        databaseReference.child("users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                txtName.setText(user.getNama_lengkap());
-                txtJurusan.setText(user.getJurusan());
-            }
+        try {
+            databaseReference.child("users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    txtName.setText(user.getNama_lengkap());
+                    txtJurusan.setText(user.getJurusan());
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception ex){
+            System.out.println("Gagal load nav header : " + ex.toString());
+        }
 //        // Loading profile image
 //        Glide.with(this).load(urlProfileImg)
 //                .crossFade()

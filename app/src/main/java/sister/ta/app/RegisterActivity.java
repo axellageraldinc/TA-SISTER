@@ -37,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     String userId, email, password, namaLengkap, jurusan;
     List<String> listJurusan = new ArrayList<>();
+    List<Jurusan> jurusanList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,8 @@ public class RegisterActivity extends AppCompatActivity {
                 try{
                     listJurusan.clear();
                     for(DataSnapshot data : dataSnapshot.getChildren()){
-                        String jurusan = data.getValue(Jurusan.class).getJurusan();
+                        String jurusan = data.getKey();
+//                        String jurusan = data.getValue(Jurusan.class).getJurusan();
                         listJurusan.add(jurusan);
                     }
                     // Creating adapter for spinner
